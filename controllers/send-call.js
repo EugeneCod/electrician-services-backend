@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 const { SMPT_HOST, SMPT_PORT, SMPT_MAIL, SMPT_PASSWORD } = process.env;
 
 const transporter = nodemailer.createTransport({
@@ -11,28 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// const sendCall = (req, res, next) => {
-//   const  { name, phone, message } = req.body;
-//   console.log(name, phone, message);
-
-//   const mailOptions = {
-//     from: SMPT_MAIL,
-//     to: SMPT_MAIL,
-//     subject: name,
-//     phone: phone,
-//     message: message,
-//   }
-
-//   transporter.sendMail(mailOptions, function(error, info) {
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       console.log(info);
-//     }
-//   });
-// }
-
-module.exports.sendCall = (req, res, next) => {
+module.exports.sendCall = (req, res) => {
   const { name, phone, message } = req.body;
   console.log(name, phone, message, SMPT_HOST);
 
@@ -45,13 +25,11 @@ module.exports.sendCall = (req, res, next) => {
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error);
       res.status(500).send({
         message: 'На сервере произошла ошибка!',
         error,
       });
     } else {
-      console.log(info);
       res.send({ message: 'Заявка на совершение звонка успешно отправлена!' });
     }
   });

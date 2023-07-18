@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { sendCall } = require('../controllers/send-call');
 
-router.post('/send-call', sendCall);
+router.post('/', sendCall);
 
 module.exports = router;
